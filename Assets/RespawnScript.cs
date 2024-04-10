@@ -7,6 +7,7 @@ public class RespawnScript : MonoBehaviour
 {
     public Rigidbody2D rb2d;
     public Animator anim;
+    public bool dying = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +34,7 @@ public class RespawnScript : MonoBehaviour
     }
     public void Die() 
     {
+        dying = true;
         GameManager.instance.GetComponent<GameManager>().deathtime = 0;
         rb2d.bodyType = RigidbodyType2D.Static;
         anim.SetTrigger("Death.R");
@@ -51,8 +53,21 @@ public class RespawnScript : MonoBehaviour
         }
         
     }
-      
- }  
+
+    public void InDanger()
+    {
+        GameManager.instance.GetComponent<GameManager>().deathtime += .01f;
+    }
+
+    public void Healing()
+    {
+        if (GameManager.instance.GetComponent<GameManager>().deathtime > 0)
+        {
+            GameManager.instance.GetComponent<GameManager>().deathtime -= .01f;
+        }
+    }
+
+}
 
 
 
@@ -61,6 +76,6 @@ public class RespawnScript : MonoBehaviour
 
 
 
-  
 
-   
+
+

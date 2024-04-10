@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     public static GameObject instance;
     public int health = 3;
     public float deathtime = 0f;
-    public float DieT =.15f;
+    public float DieT =2f;
 
     // Start is called before the first frame update
     void Start()
