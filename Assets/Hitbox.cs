@@ -5,7 +5,7 @@ using UnityEngine;
 public class Hitbox : MonoBehaviour
 {
     public Collider2D currentHitbox; // Assign the initial hitbox in the inspector
-
+    public Collider2D crawlCollider;
     // Start is called before the first frame update
     void Start()
     {
