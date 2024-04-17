@@ -8,7 +8,7 @@ public class CharacterController : MonoBehaviour
     private Rigidbody2D rb2d;
     private SpriteRenderer sprite;
     private Animator anim;
-    Collider2D standingCollider;
+    public CapsuleCollider2D standingCollider;
     private Vector3 startPos;
     private bool onGround;
     private bool Crawl;
@@ -32,22 +32,45 @@ public class CharacterController : MonoBehaviour
 
         if (Input.GetButtonDown("Jump"))
         {
-            
+
             StartCoroutine(JumpTime());
             rb2d.velocity = new Vector2(rb2d.velocity.x, 12f);
-            
+
         }
 
         UpdateAnimationState();
 
         if (Input.GetButtonDown("Crawl"))
+        {
+            Debug.Log("Crawling");
             Crawl = true;
+            anim.SetBool("Crawl", true);
+        }
+            
 
         else if (Input.GetButtonUp("Crawl"))
+        {
             Crawl = false;
+            anim.SetBool("Crawl", false);
+        }
+
+        //standingCollider.enabled = !crouchFlag;
+        if (Crawl)
+        {
+            standingCollider.size = new Vector2 (3.5f,3.5f);
+            standingCollider.offset = new Vector2(-0.3f, -3.5f);
+        }
+        else
+        {
+            standingCollider.size = new Vector2(3.5f, 6f);
+            standingCollider.offset = new Vector2(-0.3f, -2.22f);
+        }
+
+        if (Crawl)
+            rb2d.velocity *= crouchSpeedModifier;
     }
 
-    private void CrawlUpdate(bool Crawl)
+    /*private void CrawlUpdate(bool Crawl)
     {
         //standingCollider.enabled = !crouchFlag;
         if (Crawl) 
@@ -62,7 +85,7 @@ public class CharacterController : MonoBehaviour
         if (Crawl)
             rb2d.velocity *= crouchSpeedModifier;
     }
-    
+    */
     IEnumerator JumpTime()
     {
         yield return new WaitForSeconds(1f);
