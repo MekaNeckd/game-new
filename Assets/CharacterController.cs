@@ -8,9 +8,11 @@ public class CharacterController : MonoBehaviour
     private Rigidbody2D rb2d;
     private SpriteRenderer sprite;
     private Animator anim;
+    Collider2D standingCollider;
     private Vector3 startPos;
     private bool onGround;
-
+    private bool Crawl;
+    float crouchSpeedModifier = 0.5f;
     private float directionX = 0f;
 
     // Start is called before the first frame update
@@ -37,8 +39,30 @@ public class CharacterController : MonoBehaviour
         }
 
         UpdateAnimationState();
+
+        if (Input.GetButtonDown("Crawl"))
+            Crawl = true;
+
+        else if (Input.GetButtonUp("Crawl"))
+            Crawl = false;
     }
 
+    private void CrawlUpdate(bool Crawl)
+    {
+        //standingCollider.enabled = !crouchFlag;
+        if (Crawl) 
+        {
+            standingCollider.enabled = false;
+        }
+        else
+        {
+            standingCollider.enabled = true;
+        }
+
+        if (Crawl)
+            rb2d.velocity *= crouchSpeedModifier;
+    }
+    
     IEnumerator JumpTime()
     {
         yield return new WaitForSeconds(1f);
