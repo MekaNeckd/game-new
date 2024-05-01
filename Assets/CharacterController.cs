@@ -40,7 +40,7 @@ public class CharacterController : MonoBehaviour
 
         UpdateAnimationState();
 
-        if (Input.GetButtonDown("Crawl"))
+        if (Input.GetButtonDown("Crawl") /* && onGround */)
         {
             Debug.Log("Crawling");
             Crawl = true;
