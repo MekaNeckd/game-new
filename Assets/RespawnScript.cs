@@ -50,7 +50,7 @@ public class RespawnScript : MonoBehaviour
         else
         {
             Destroy(GameManager.instance);
-            SceneManager.LoadScene("Start");
+            SceneManager.LoadScene("GameMain(Final)(NEW)");
         }
         
     }
