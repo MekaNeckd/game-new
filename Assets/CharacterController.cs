@@ -1,19 +1,24 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class CharacterController : MonoBehaviour
 {
-    private Rigidbody2D rb2d;
+    public Rigidbody2D rb2d;
     private SpriteRenderer sprite;
     private Animator anim;
     public CapsuleCollider2D standingCollider;
     private Vector3 startPos;
-    private bool onGround;
+    public bool Grounded;
     private bool Crawl;
     float crouchSpeedModifier = 0.5f;
     private float directionX = 0f;
+    public BoxCollider2D groundCheck;
+    public LayerMask groundMask;
+    public float drag;
+   
 
     // Start is called before the first frame update
     private void Start()
@@ -27,6 +32,7 @@ public class CharacterController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        
         directionX = Input.GetAxis("Horizontal");
         rb2d.velocity = new Vector2(directionX * 6f, rb2d.velocity.y);
 
@@ -34,13 +40,13 @@ public class CharacterController : MonoBehaviour
         {
 
             StartCoroutine(JumpTime());
-            rb2d.velocity = new Vector2(rb2d.velocity.x, 12f);
+            rb2d.velocity = new Vector2(rb2d.velocity.x, 15f);
 
         }
 
         UpdateAnimationState();
 
-        if (Input.GetButtonDown("Crawl") /* && onGround */)
+        if (Input.GetButtonDown("Crawl")  && Grounded )
         {
             Debug.Log("Crawling");
             Crawl = true;
@@ -48,7 +54,7 @@ public class CharacterController : MonoBehaviour
         }
             
 
-        else if (Input.GetButtonUp("Crawl"))
+        else if (Input.GetButtonUp("Crawl") == Grounded)
         {
             Crawl = false;
             anim.SetBool("Crawl", false);
@@ -70,6 +76,20 @@ public class CharacterController : MonoBehaviour
             rb2d.velocity *= crouchSpeedModifier;
     }
 
+    private void FixedUpdate()
+    {
+        CheckGround();
+        rb2d.velocity *= .97f;
+        if (Grounded)
+        {
+            rb2d.velocity *= drag;
+        }
+    }
+
+    void CheckGround()
+    {
+        Grounded = Physics2D.OverlapAreaAll(groundCheck.bounds.min, groundCheck.bounds.max, groundMask).Length > 0;
+    }
     /*private void CrawlUpdate(bool Crawl)
     {
         //standingCollider.enabled = !crouchFlag;

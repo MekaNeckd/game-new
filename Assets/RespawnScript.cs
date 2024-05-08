@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -56,7 +57,7 @@ public class RespawnScript : MonoBehaviour
 
     public void InDanger()
     {
-        GameManager.instance.GetComponent<GameManager>().deathtime += .01f;
+        GameManager.instance.GetComponent<GameManager>().deathtime += .03f;
     }
 
     public void Healing()
